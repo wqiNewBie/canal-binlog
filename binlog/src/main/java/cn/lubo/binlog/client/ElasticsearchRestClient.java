@@ -30,13 +30,19 @@ public class ElasticsearchRestClient {
     @Value("${elasticsearch.port}")
     private int esServerPort;
 
+    @Value("${elasticsearch.username}")
+    private String esUserName;
+
+    @Value("${elasticsearch.password}")
+    private String esPassWord;
+
     @Bean(name = "RestHighLevelClient")
     public RestHighLevelClient highLevelClient(/*@Autowired RestClientBuilder restClientBuilder*/) {
         /** 用户认证对象 */
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         /** 设置账号密码 */
         credentialsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials("elastic", "Lujs@com_Elastic2019"));
+                new UsernamePasswordCredentials(esUserName, esPassWord));
         /** 创建rest client对象 */
         RestClientBuilder builder = RestClient.builder(new HttpHost(esHostName, esServerPort))
                 .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
